@@ -10,6 +10,7 @@ import Paragraph from '@/components/ui/Paragraph'
 
 export default function BoxOfficeDetail() {
 	const { params } = useRoute()
+	console.log('params ==>', params)
 	const navigation = useNavigation()
 
 	const { data, error } = useFetch({ movieCd: params.movieCd }, getBoxOfficeDetail)

@@ -1,11 +1,11 @@
 import Background from '@/components/ui/Background'
-import UserSignIn from '@/components/user/signIn/UserSignIn'
 import React from 'react'
+import { Text } from 'react-native'
 
-export default function SignInScreen() {
+export default function MyProfileScreen() {
 	return (
 		<Background>
-			<UserSignIn />
+			<Text>마이 프로필</Text>
 		</Background>
 	)
 }

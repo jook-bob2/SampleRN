@@ -1,83 +1,31 @@
 import React, { useCallback, useContext, useState } from 'react'
-import { Keyboard, Platform, StatusBar, TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
+import { StyleSheet, TouchableOpacity } from 'react-native'
 import styled from 'styled-components/native'
 import auth from '@react-native-firebase/auth'
 import { useFocusEffect, useNavigation } from '@react-navigation/core'
 import { UserStateContext } from '@/core/store/common/create'
 import Button from '@/components/ui/Button'
-import Background from '@/components/ui/Background'
 import TextInput from '@/components/ui/TextInput'
 import { emailValidator, passwordValidator } from '@/utils/validator'
-import Header from '@/components/ui/Header'
 import { theme } from '@/theme/theme'
+import Logo from '@/components/ui/Logo'
+import Row from '@/components/ui/Row'
+import Title from '@/components/ui/Title'
 
-// const Container = styled.SafeAreaView`
-// 	flex: 1;
-// 	background-color: #fff;
-// 	align-items: center;
-// 	justify-content: center;
-// `
-
-// 키보드 동작성 감지 컴포넌트
-const KeyboardAvoidingView = styled.KeyboardAvoidingView`
-	flex: 1;
-	width: 100%;
+const Container = styled.View`
 	align-items: center;
 	justify-content: center;
+	margin-top: 80px;
 `
-
-const Image = styled.Image`
-	margin-bottom: 40px;
-	width: 100px;
-	height: 100px;
-`
-
-// const InputView = styled.View`
-// 	/* background-color: #ffc0cb; */
-// 	background-color: ${theme.colors.surface};
-// 	border-radius: 30px;
-// 	width: 70%;
-// 	height: 45px;
-// 	margin-bottom: 20px;
-// 	align-items: center;
-// `
-
-// const TextInput = styled.TextInput`
-// 	height: 50px;
-// 	flex: 1;
-// 	padding: 10px;
-// 	margin-left: 20px;
-// `
 
 const Label = styled.Text`
 	color: ${theme.colors.secondary};
-`
-
-const Row = styled.View`
-	flex-direction: row;
-	margin: 4px 4px 8px 4px;
 `
 
 const Link = styled.Text`
 	font-weight: bold;
 	color: ${theme.colors.primary};
 `
-
-// const LoginBtn = styled.TouchableOpacity`
-// 	width: 80%;
-// 	border-radius: 25px;
-// 	height: 50px;
-// 	align-items: center;
-// 	justify-content: center;
-// 	margin-top: 40px;
-// 	background-color: #ff1493;
-// `
-
-// const LoginText = styled.Text`
-// 	font-size: 18px;
-// 	font-weight: bold;
-// 	color: #ffffff;
-// `
 
 export default function UserSignIn() {
 	const { navigate } = useNavigation()
@@ -88,7 +36,7 @@ export default function UserSignIn() {
 	useFocusEffect(
 		useCallback(() => {
 			if (userState.token) {
-				navigate('Main')
+				navigate('MainScreen')
 			}
 		}, [userState]),
 	)
@@ -101,7 +49,7 @@ export default function UserSignIn() {
 					const { email, uid, displayName, emailVerified } = response.user
 					if (emailVerified) {
 						setUserInfo({ id: 1, email, token: uid, name: displayName })
-						navigate('Main')
+						navigate('MainStackFlow', { screen: 'MainScreen' })
 					} else {
 						alert('이메일을 인증해 주세요.')
 					}
@@ -132,52 +80,57 @@ export default function UserSignIn() {
 	}
 
 	return (
-		<Background>
-			<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-				<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-					<Image source={require('@/assets/images/signIn.png')} />
-					<Header>로그인</Header>
+		<Container>
+			<Logo width={100} height={100} bottom={40} source={require('@assets/images/signIn.png')} />
+			<Title>로그인</Title>
 
-					<StatusBar style="auto" />
+			<TextInput
+				label="E-mail"
+				returnKeyType="next"
+				value={email.value}
+				onChangeText={(text) => setEmail({ value: text, error: '' })}
+				error={!!email.error}
+				errorText={email.error}
+				autoCapitalize="none"
+				autoCompleteType="email"
+				textContentType="emailAddress"
+				keyboardType="email-address"
+				style={styles.textInput}
+			/>
 
-					<TextInput
-						label="E-mail"
-						returnKeyType="next"
-						value={email.value}
-						onChangeText={(text) => setEmail({ value: text, error: '' })}
-						error={!!email.error}
-						errorText={email.error}
-						autoCapitalize="none"
-						autoCompleteType="email"
-						textContentType="emailAddress"
-						keyboardType="email-address"
-					/>
+			<TextInput
+				label="비밀번호"
+				returnKeyType="done"
+				value={password.value}
+				onChangeText={(text) => setPassword({ value: text, error: '' })}
+				error={!!password.error}
+				errorText={password.error}
+				secureTextEntry
+				style={styles.textInput}
+			/>
 
-					<TextInput
-						label="비밀번호"
-						returnKeyType="done"
-						value={password.value}
-						onChangeText={(text) => setPassword({ value: text, error: '' })}
-						error={!!password.error}
-						errorText={password.error}
-						secureTextEntry
-					/>
+			<Row>
+				<Label>비밀번호를 잊으셨나요? </Label>
+				<TouchableOpacity onPress={() => alert('미구현 상태입니다.')}>
+					<Link>비밀번호 찾기</Link>
+				</TouchableOpacity>
+			</Row>
 
-					<Row>
-						<Label>비밀번호를 잊으셨나요? </Label>
-						<TouchableOpacity onPress={() => alert('미구현 상태입니다.')}>
-							<Link>비밀번호 찾기</Link>
-						</TouchableOpacity>
-					</Row>
-
-					<Button mode="contained" onPress={handlePressLogin}>
-						로그인
-					</Button>
-					<Button mode="contained" onPress={() => navigate('SignUp')}>
-						회원가입
-					</Button>
-				</KeyboardAvoidingView>
-			</TouchableWithoutFeedback>
-		</Background>
+			<Button mode="contained" onPress={handlePressLogin} style={styles.button}>
+				로그인
+			</Button>
+			<Button mode="contained" onPress={() => navigate('SignUpScreen')} style={styles.button}>
+				회원가입
+			</Button>
+		</Container>
 	)
 }
+
+const styles = StyleSheet.create({
+	button: {
+		maxWidth: 200,
+	},
+	textInput: {
+		maxWidth: 300,
+	},
+})

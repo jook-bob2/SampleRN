@@ -1,19 +1,21 @@
-import React, { useEffect } from 'react'
+import React, { useCallback } from 'react'
 import { ActivityIndicator } from 'react-native'
 import BoxOfficeListItem from './BoxOfficeListItem'
 import Paragraph from '@/components/ui/Paragraph'
 import useFetch, { preFetch } from '@/core/net/useFetch'
 import { yesterDay, getBoxOfficeList, getBoxOfficeDetail } from '@/core/api/boxOfficeApi'
+import { useFocusEffect } from '@react-navigation/core'
 
 export default function BoxOfficeList() {
 	const { data, error } = useFetch({ targetDt: yesterDay }, getBoxOfficeList)
-	console.log(data, error)
 
-	useEffect(() => {
-		if (!data) return
+	useFocusEffect(
+		useCallback(() => {
+			if (!data) return
 
-		getDetailPreFetch()
-	}, [data])
+			getDetailPreFetch()
+		}, [data]),
+	)
 
 	if (error) return <Paragraph>{JSON.stringify(error)}</Paragraph>
 	if (!data) return <ActivityIndicator size="large" />

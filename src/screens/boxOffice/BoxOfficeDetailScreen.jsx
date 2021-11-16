@@ -1,11 +1,11 @@
-import BasicLayout from '@/components/ui/layout/BasicLayout'
-import BoxOfficeDetailContainer from '@/containers/boxOffice/BoxOfficeDetailContainer'
+import BoxOfficeDetail from '@/components/boxOffice/detail/BoxOfficeDetail'
+import Background from '@/components/ui/Background'
 import React from 'react'
 
 export default function BoxOfficeDetailScreen() {
 	return (
-		<BasicLayout>
-			<BoxOfficeDetailContainer />
-		</BasicLayout>
+		<Background>
+			<BoxOfficeDetail />
+		</Background>
 	)
 }

@@ -1,24 +1,20 @@
-import React, { memo, useCallback, useContext, useEffect, useState } from 'react'
-import { StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Keyboard, Platform } from 'react-native'
+import React, { memo, useCallback, useContext, useState } from 'react'
+import { StyleSheet, TouchableOpacity } from 'react-native'
 import { theme } from '@theme/theme'
-import { emailValidator, nameValidator, passwordValidator } from '@/utils/validator'
-import Background from '@/components/ui/Background'
-import BackButton from '@/components/ui/BackButton'
+import { emailValidator, nameValidator, passwordCheckValidator, passwordValidator } from '@/utils/validator'
 import Logo from '@/components/ui/Logo'
-import Header from '@/components/ui/Header'
 import TextInput from '@/components/ui/TextInput'
 import Button from '@/components/ui/Button'
 import auth from '@react-native-firebase/auth'
 import { UserStateContext } from '@/core/store/common/create'
 import { useFocusEffect, useNavigation } from '@react-navigation/core'
 import styled from 'styled-components/native'
+import Title from '@/components/ui/Title'
 
-// 키보드 동작성 감지 컴포넌트
-const KeyboardAvoidingView = styled.KeyboardAvoidingView`
-	flex: 1;
-	width: 100%;
+const Container = styled.View`
 	align-items: center;
 	justify-content: center;
+	margin-top: 30px;
 `
 
 const Row = styled.View`
@@ -39,32 +35,29 @@ function UserSignUp() {
 	const [name, setName] = useState({ value: '', error: '' })
 	const [email, setEmail] = useState({ value: '', error: '' })
 	const [password, setPassword] = useState({ value: '', error: '' })
+	const [passwordCheck, setPasswordCheck] = useState({ value: '', error: '' })
 	const { userState } = useContext(UserStateContext)
-	const { navigate, goBack } = useNavigation()
-	const [showBackBtn, setShowBackBtn] = useState(true)
+	const { navigate } = useNavigation()
 
 	useFocusEffect(
 		useCallback(() => {
 			if (userState.token) {
-				navigate('Main')
+				navigate('MainScreen')
 			}
 		}, [userState]),
 	)
-
-	useEffect(() => {
-		Keyboard.addListener('keyboardDidShow', () => setShowBackBtn(false))
-		Keyboard.addListener('keyboardDidHide', () => setShowBackBtn(true))
-	}, [])
 
 	const handlePressSignUp = () => {
 		const nameError = nameValidator(name.value)
 		const emailError = emailValidator(email.value)
 		const passwordError = passwordValidator(password.value)
+		const passwordCheckError = passwordCheckValidator(password.value, passwordCheck.value)
 
-		if (emailError || passwordError || nameError) {
+		if (emailError || passwordError || nameError || passwordCheckError) {
 			setName({ ...name, error: nameError })
 			setEmail({ ...email, error: emailError })
 			setPassword({ ...password, error: passwordError })
+			setPasswordCheck({ ...passwordCheck, error: passwordCheckError })
 			return
 		}
 
@@ -78,7 +71,7 @@ function UserSignUp() {
 						displayName: name.value,
 					})
 					.then(() => {
-						navigate('SignIn')
+						navigate('SignInScreen')
 					})
 					.catch((err) => {
 						console.log('currentuser err => ', err)
@@ -103,59 +96,71 @@ function UserSignUp() {
 	}
 
 	return (
-		<Background>
-			<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-				<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-					{showBackBtn && <BackButton goBack={goBack} />}
-					<Logo />
-					<Header>회원가입</Header>
-					<TextInput
-						label="이름"
-						returnKeyType="next"
-						value={name.value}
-						onChangeText={(text) => setName({ value: text, error: '' })}
-						error={!!name.error}
-						errorText={name.error}
-					/>
-					<TextInput
-						label="E-mail"
-						returnKeyType="next"
-						value={email.value}
-						onChangeText={(text) => setEmail({ value: text, error: '' })}
-						error={!!email.error}
-						errorText={email.error}
-						autoCapitalize="none"
-						autoCompleteType="email"
-						textContentType="emailAddress"
-						keyboardType="email-address"
-					/>
-					<TextInput
-						label="비밀번호"
-						returnKeyType="done"
-						value={password.value}
-						onChangeText={(text) => setPassword({ value: text, error: '' })}
-						error={!!password.error}
-						errorText={password.error}
-						secureTextEntry
-					/>
-					<Button mode="contained" onPress={handlePressSignUp} style={styles.button}>
-						가입 신청
-					</Button>
-					<Row>
-						<Label>이미 계정이 있으신가요? </Label>
-						<TouchableOpacity onPress={() => navigate('SignIn')}>
-							<Link>로그인</Link>
-						</TouchableOpacity>
-					</Row>
-				</KeyboardAvoidingView>
-			</TouchableWithoutFeedback>
-		</Background>
+		<Container>
+			<Logo source={require('@assets/images/logo.png')} />
+			<Title>회원가입</Title>
+			<TextInput
+				label="이름"
+				returnKeyType="next"
+				value={name.value}
+				onChangeText={(text) => setName({ value: text, error: '' })}
+				error={!!name.error}
+				errorText={name.error}
+				style={styles.textInput}
+			/>
+			<TextInput
+				label="E-mail"
+				returnKeyType="next"
+				value={email.value}
+				onChangeText={(text) => setEmail({ value: text, error: '' })}
+				error={!!email.error}
+				errorText={email.error}
+				autoCapitalize="none"
+				autoCompleteType="email"
+				textContentType="emailAddress"
+				keyboardType="email-address"
+				style={styles.textInput}
+			/>
+			<TextInput
+				label="비밀번호"
+				returnKeyType="done"
+				value={password.value}
+				onChangeText={(text) => setPassword({ value: text, error: '' })}
+				error={!!password.error}
+				errorText={password.error}
+				secureTextEntry
+				style={styles.textInput}
+			/>
+			<TextInput
+				label="비밀번호 확인"
+				returnKeyType="done"
+				value={passwordCheck.value}
+				onChangeText={(text) => setPasswordCheck({ value: text, error: '' })}
+				error={!!passwordCheck.error}
+				errorText={passwordCheck.error}
+				secureTextEntry
+				style={styles.textInput}
+			/>
+			<Button mode="contained" onPress={handlePressSignUp} style={styles.button}>
+				가입 신청
+			</Button>
+			<Row>
+				<Label>이미 계정이 있으신가요? </Label>
+				<TouchableOpacity onPress={() => navigate('SignInScreen')}>
+					<Link>로그인</Link>
+				</TouchableOpacity>
+			</Row>
+		</Container>
 	)
 }
 
 const styles = StyleSheet.create({
 	button: {
 		marginTop: 24,
+		maxWidth: 200,
+	},
+	textInput: {
+		maxWidth: 300,
 	},
 })
 

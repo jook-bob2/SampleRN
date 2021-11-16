@@ -11,12 +11,12 @@ const Image = styled.Image`
 	margin-bottom: ${(props) => props.bottom || 12}px;
 `
 
-const Logo = ({ source }) => {
+function MenuIcons({ source }) {
 	return (
 		<Container>
-			<Image source={source} />
+			<Image source={source || require('@assets/images/hamburg.png')} />
 		</Container>
 	)
 }
 
-export default memo(Logo)
+export default memo(MenuIcons)

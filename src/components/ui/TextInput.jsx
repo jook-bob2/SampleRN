@@ -16,18 +16,20 @@ const Text = styled.Text`
 	padding-top: 4px;
 `
 
-const TextInput = ({ errorText, ...props }) => (
-	<View>
-		<Input
-			style={styles.input}
-			selectionColor={theme.colors.primary}
-			underlineColor="transparent"
-			mode="outlined"
-			{...props}
-		/>
-		{errorText ? <Text>{errorText}</Text> : null}
-	</View>
-)
+const TextInput = ({ errorText, style, ...props }) => {
+	return (
+		<View style={style}>
+			<Input
+				style={styles.input}
+				selectionColor={theme.colors.primary}
+				underlineColor="transparent"
+				mode="outlined"
+				{...props}
+			/>
+			{errorText ? <Text>{errorText}</Text> : null}
+		</View>
+	)
+}
 
 const styles = StyleSheet.create({
 	input: {

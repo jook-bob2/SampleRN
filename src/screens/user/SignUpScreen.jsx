@@ -1,6 +1,11 @@
-import SignUpContainer from '@/containers/user/SignUpContainer'
+import Background from '@/components/ui/Background'
+import UserSignUp from '@/components/user/signUp/UserSignUp'
 import React from 'react'
 
 export default function SignUpScreen() {
-	return <SignUpContainer />
+	return (
+		<Background>
+			<UserSignUp />
+		</Background>
+	)
 }

@@ -23,7 +23,7 @@ export default function BoxOfficeListItem({ data }) {
 
 	const navigateMovieDetail = useCallback(
 		(movieCd) => {
-			navigate('BoxOfficeDetailScreen', { movieCd })
+			navigate('BackStackFlow', { screen: 'BoxOfficeDetailScreen', params: { movieCd } })
 		},
 		[navigate],
 	)

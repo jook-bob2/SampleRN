@@ -1,11 +1,11 @@
-import BasicLayout from '@/components/ui/layout/BasicLayout'
-import BoxOfficeSearchResultContainer from '@/containers/boxOffice/BoxOfficeSearchResultContainer'
+import BoxOfficeSearchResult from '@/components/boxOffice/searchResult/BoxOfficeSearchResult'
+import Background from '@/components/ui/Background'
 import React from 'react'
 
 export default function BoxOfficeSearchResultScreen() {
 	return (
-		<BasicLayout>
-			<BoxOfficeSearchResultContainer />
-		</BasicLayout>
+		<Background isFlat={true}>
+			<BoxOfficeSearchResult />
+		</Background>
 	)
 }

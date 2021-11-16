@@ -1,11 +1,11 @@
 import React from 'react'
-import MainContainer from '@/containers/main/MainContainer'
-import BasicLayout from '@component/ui/layout/BasicLayout'
+import Background from '@/components/ui/Background'
+import Main from '@/components/main/Main'
 
 export default function MainScreen() {
 	return (
-		<BasicLayout>
-			<MainContainer />
-		</BasicLayout>
+		<Background>
+			<Main />
+		</Background>
 	)
 }

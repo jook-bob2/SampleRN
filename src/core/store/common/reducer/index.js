@@ -1,4 +1,4 @@
-import { alertInitialState, confirmInitialState, queryInitialState, userInitialState } from '../initialState'
+import { alertInitialState, confirmInitialState, userInitialState } from '../initialState'
 import { constants } from '../constants'
 
 export const alertReducer = (state, { type, title, msg }) => {
@@ -34,39 +34,15 @@ export const userReducer = (state, { type, payload }) => {
 	}
 }
 
-export const langReducer = (state, { type, lang, langText }) => {
+export const pathHistoryReducer = (state, { type, payload }) => {
 	switch (type) {
-		case constants.SET_LANG:
-			return { lang, langText }
-		default:
-			break
-	}
-}
-
-export const hostingCntReducer = (state, { type, hostingCnt }) => {
-	switch (type) {
-		case constants.SET_HOSTING_CNT:
-			return { hostingCnt }
-		default:
-			break
-	}
-}
-
-export const pathHistoryReducer = (state, { type, prevPath, curPath }) => {
-	switch (type) {
-		case constants.SET_PATH_HISTORY:
-			return { prevPath, curPath }
-		default:
-			break
-	}
-}
-
-export const queryReducer = (state, { type, payload }) => {
-	switch (type) {
-		case constants.SET_NORMAL_QUERY:
-			return payload
-		case constants.INIT_NORMAL_QUERY:
-			return queryInitialState
+		case constants.PUSH_PATH_HISTORY:
+			console.log('현재상태 ==>', state)
+			console.log('페이 로드 ==> ', payload)
+			return [...state, payload]
+		case constants.POP_PATH_HISTORY:
+			console.log('pop state', state)
+			return state.length > 0 ? state.filter((h) => h.screen !== payload).slice(state.length - 20) : []
 		default:
 			break
 	}
