@@ -1,9 +1,8 @@
-import React, { useCallback, useContext, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { StyleSheet, TouchableOpacity } from 'react-native'
 import styled from 'styled-components/native'
 import auth from '@react-native-firebase/auth'
 import { useFocusEffect, useNavigation } from '@react-navigation/core'
-import { UserStateContext } from '@/core/store/common/create'
 import Button from '@/components/ui/Button'
 import TextInput from '@/components/ui/TextInput'
 import { emailValidator, passwordValidator } from '@/utils/validator'
@@ -11,6 +10,7 @@ import { theme } from '@/theme/theme'
 import Logo from '@/components/ui/Logo'
 import Row from '@/components/ui/Row'
 import Title from '@/components/ui/Title'
+import { useUser } from '@/core/store/common/providers/UserProvider'
 
 const Container = styled.View`
 	align-items: center;
@@ -28,8 +28,8 @@ const Link = styled.Text`
 `
 
 export default function UserSignIn() {
-	const { navigate } = useNavigation()
-	const { userState, setUserInfo } = useContext(UserStateContext)
+	const { navigate, replace } = useNavigation()
+	const { userState, setUserInfo } = useUser()
 	const [email, setEmail] = useState({ value: '', error: '' })
 	const [password, setPassword] = useState({ value: '', error: '' })
 
@@ -49,7 +49,7 @@ export default function UserSignIn() {
 					const { email, uid, displayName, emailVerified } = response.user
 					if (emailVerified) {
 						setUserInfo({ id: 1, email, token: uid, name: displayName })
-						navigate('MainStackFlow', { screen: 'MainScreen' })
+						replace('MainScreen')
 					} else {
 						alert('이메일을 인증해 주세요.')
 					}

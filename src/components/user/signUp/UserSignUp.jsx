@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useContext, useState } from 'react'
+import React, { memo, useCallback, useState } from 'react'
 import { StyleSheet, TouchableOpacity } from 'react-native'
 import { theme } from '@theme/theme'
 import { emailValidator, nameValidator, passwordCheckValidator, passwordValidator } from '@/utils/validator'
@@ -6,10 +6,10 @@ import Logo from '@/components/ui/Logo'
 import TextInput from '@/components/ui/TextInput'
 import Button from '@/components/ui/Button'
 import auth from '@react-native-firebase/auth'
-import { UserStateContext } from '@/core/store/common/create'
 import { useFocusEffect, useNavigation } from '@react-navigation/core'
 import styled from 'styled-components/native'
 import Title from '@/components/ui/Title'
+import { useUser } from '@/core/store/common/providers/UserProvider'
 
 const Container = styled.View`
 	align-items: center;
@@ -36,7 +36,7 @@ function UserSignUp() {
 	const [email, setEmail] = useState({ value: '', error: '' })
 	const [password, setPassword] = useState({ value: '', error: '' })
 	const [passwordCheck, setPasswordCheck] = useState({ value: '', error: '' })
-	const { userState } = useContext(UserStateContext)
+	const { userState } = useUser()
 	const { navigate } = useNavigation()
 
 	useFocusEffect(
@@ -64,12 +64,11 @@ function UserSignUp() {
 		auth()
 			.createUserWithEmailAndPassword(email.value, password.value)
 			.then(() => {
-				const currentUser = auth().currentUser
+				const { updateProfile, sendEmailVerification } = auth().currentUser
 
-				currentUser
-					.updateProfile({
-						displayName: name.value,
-					})
+				updateProfile({
+					displayName: name.value,
+				})
 					.then(() => {
 						navigate('SignInScreen')
 					})
@@ -77,7 +76,7 @@ function UserSignUp() {
 						console.log('currentuser err => ', err)
 					})
 
-				currentUser.sendEmailVerification()
+				sendEmailVerification()
 			})
 			.catch((error) => {
 				console.log(error)

@@ -37,12 +37,9 @@ export const userReducer = (state, { type, payload }) => {
 export const pathHistoryReducer = (state, { type, payload }) => {
 	switch (type) {
 		case constants.PUSH_PATH_HISTORY:
-			console.log('현재상태 ==>', state)
-			console.log('페이 로드 ==> ', payload)
-			return [...state, payload]
+			return [...state, payload].splice(state.length - 10)
 		case constants.POP_PATH_HISTORY:
-			console.log('pop state', state)
-			return state.length > 0 ? state.filter((h) => h.screen !== payload).slice(state.length - 20) : []
+			return state.length > 0 ? state.filter((element, index) => index < state.length - 1) : []
 		default:
 			break
 	}

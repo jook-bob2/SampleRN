@@ -10,15 +10,14 @@ import Paragraph from '@/components/ui/Paragraph'
 
 export default function BoxOfficeDetail() {
 	const { params } = useRoute()
-	console.log('params ==>', params)
 	const navigation = useNavigation()
 
-	const { data, error } = useFetch({ movieCd: params.movieCd }, getBoxOfficeDetail)
+	const { data, error } = useFetch({ movieCd: params.params.movieCd }, getBoxOfficeDetail)
 
 	useEffect(() => {
 		if (data) {
 			navigation.setOptions({
-				title: data.movieInfoResult.movieInfo.movieNm,
+				title: data?.movieInfoResult?.movieInfo.movieNm,
 			})
 		}
 	}, [data])
@@ -26,7 +25,7 @@ export default function BoxOfficeDetail() {
 	if (error) return <Paragraph>{JSON.stringify(error)}</Paragraph>
 	if (!data) return <ActivityIndicator size="large" />
 
-	const detail = data.movieInfoResult.movieInfo
+	const detail = data?.movieInfoResult?.movieInfo
 
 	return (
 		<>

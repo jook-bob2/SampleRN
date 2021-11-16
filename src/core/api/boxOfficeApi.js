@@ -14,7 +14,6 @@ const peopleUri = '/kobisopenapi/webservice/rest/people/searchPeopleList.json'
 export const yesterDay = moment().subtract(1, 'day').format('YYYYMMDD')
 
 export async function getBoxOfficeList({ targetDt }) {
-	console.log('axios : ', targetDt)
 	return await noneAuthClient.get(dailyUri, {
 		params: {
 			key: kobisKey,
@@ -34,7 +33,6 @@ export async function getBoxOfficeDetail({ movieCd }) {
 }
 
 export async function getBoxOfficePeople({ peopleNm }) {
-	console.log('====================== get people info ======================', peopleNm)
 	return noneAuthClient.get(peopleUri, {
 		params: {
 			key: kobisKey,

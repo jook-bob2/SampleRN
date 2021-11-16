@@ -1,8 +1,8 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer'
 import auth from '@react-native-firebase/auth'
-import { UserStateContext } from '@/core/store/common/create'
 import styled from 'styled-components/native'
+import { useUser } from '@/core/store/common/providers/UserProvider'
 
 const ProfileView = styled.View`
 	flex: 1;
@@ -21,7 +21,7 @@ export default function CustomDrawerContent(props) {
 	const { getState, navigate, closeDrawer } = props?.navigation
 	const flowName = getState()?.routes[0]?.name
 	console.log('flowName ==> ', flowName)
-	const { initUserInfo } = useContext(UserStateContext)
+	const { initUserInfo } = useUser()
 
 	function handlePressLogout() {
 		auth()

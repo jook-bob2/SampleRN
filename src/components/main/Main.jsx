@@ -1,9 +1,9 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { View, Text } from 'react-native'
-import { UserStateContext } from '@/core/store/common/create'
+import { useUser } from '@/core/store/common/providers/UserProvider'
 
 export default function Main() {
-	const { userState } = useContext(UserStateContext)
+	const { userState } = useUser()
 
 	return (
 		<View>

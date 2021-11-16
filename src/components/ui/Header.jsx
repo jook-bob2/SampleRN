@@ -1,10 +1,8 @@
-import React, { memo, useCallback, useContext } from 'react'
+import React, { memo, useEffect } from 'react'
 import { getStatusBarHeight } from 'react-native-status-bar-height'
 import styled from 'styled-components/native'
 import { theme } from '@theme/theme'
-import { useFocusEffect, useRoute } from '@react-navigation/core'
 import { useHistoryPath } from '@/core/store/common/providers/PathHistoryProvider'
-import { PathHistoryStateContext } from '@/core/store/common/create'
 
 const Wrapper = styled.View`
 	flex-direction: row;
@@ -45,55 +43,27 @@ const Text = styled.Text`
 	color: black;
 `
 
-const Header = ({ options, navigation, isBack }) => {
-	// console.log('{옵션 ==> } ==> ', options)
-	// scene =>  {"layout": {"height": 844, "width": 390, "x": 0, "y": 0},
-	// "navigation":
-	// {"addListener": [Function addListener],
-	// "canGoBack": [Function canGoBack],
-	// "closeDrawer": [Function anonymous],
-	// "dispatch": [Function dispatch],
-	// "getParent": [Function getParent],
-	// "getState": [Function anonymous],
-	// "goBack": [Function anonymous],
-	// "isFocused": [Function isFocused],
-	// "jumpTo": [Function anonymous],
-	// "navigate": [Function anonymous],
-	// "openDrawer": [Function anonymous],
-	// "pop": [Function anonymous],
-	// "popToTop": [Function anonymous],
-	// "push": [Function anonymous],
-	// "removeListener": [Function removeListener],
-	// "replace": [Function anonymous],
-	// "reset": [Function anonymous],
-	// "setOptions": [Function setOptions],
-	// "setParams": [Function anonymous],
-	// "toggleDrawer": [Function anonymous]},
-	// "options": {"header": [Function header], "title": "메인"},
-	// "route": {"key": "MainScreen-BJ1IW3SUhoKaqbdwCADY4", "name": "MainScreen", "params": undefined}}
-
-	// const navigation = useNavigation()
-	const route = useRoute()
-	console.log('겟 라우트 => ', route)
-	// const { state: history, pushHistory, popHistory } = useHistoryPath()
-	const { pushHistory, popHistory } = useContext(PathHistoryStateContext)
-
-	useFocusEffect(
-		useCallback(() => {
-			console.log('==============================================포커스 됨=======================')
-			pushHistory({ flow: route.name, screen: route.params.screen, params: route.params.params })
-		}, [route]),
-	)
+const Header = (props) => {
+	const { options, navigation, route } = props
+	const { state: history, pushHistory, popHistory } = useHistoryPath()
 
 	const title =
 		options.headerTitle !== undefined ? options.headerTitle : options.title !== undefined ? options.title : null
 
+	useEffect(() => {
+		pushHistory({
+			index: history.length > 0 ? history[history.length - 1].index + 1 : 1,
+			screen: route.name,
+			params: route.params || {},
+		})
+	}, [route])
+
 	function handlePressToggle() {
-		console.log(navigation.canGoBack())
-		if (isBack) {
-			console.log(popHistory(route.params.screen))
-			// navigation.goBack(null)
-			// navigation.
+		if (options.isBack) {
+			const { screen, params } = popHistory()
+			if (screen) {
+				navigation.navigate(screen, params)
+			}
 		} else {
 			navigation.toggleDrawer()
 		}
@@ -103,10 +73,10 @@ const Header = ({ options, navigation, isBack }) => {
 		<Wrapper>
 			{navigation && (
 				<Left>
-					<TouchableOpacity onPress={handlePressToggle}>
+					<TouchableOpacity onPress={() => handlePressToggle()}>
 						<Image
 							source={
-								isBack
+								options.isBack
 									? require('@assets/images/arrow_back.png')
 									: require('@assets/images/hamburg.png')
 							}

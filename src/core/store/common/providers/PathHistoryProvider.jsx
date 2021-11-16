@@ -8,24 +8,22 @@ const { PUSH_PATH_HISTORY, POP_PATH_HISTORY } = constants
 
 export function PathHistoryProvider({ children }) {
 	const [historyState, historyDispatch] = useReducer(pathHistoryReducer, pathHistoryInitialState)
-	console.log('뭐지? ', historyState)
 
 	function pushHistory(payload) {
-		console.log('fsdafdasfdsaf =>', historyState)
-		console.log('data ==> ', payload)
 		historyDispatch({
 			type: PUSH_PATH_HISTORY,
 			payload,
 		})
 	}
 
-	function popHistory(payload) {
+	function popHistory() {
 		historyDispatch({
 			type: POP_PATH_HISTORY,
-			payload,
 		})
 
-		return historyState
+		console.log('historyState ==>', historyState)
+
+		return historyState.length > 0 ? historyState[historyState.length - 2] : []
 	}
 
 	return (
@@ -41,8 +39,8 @@ export function useHistoryPath() {
 		pushHistory,
 		popHistory,
 	} = useContext(PathHistoryStateContext)
-	// if (!state) {
-	// 	throw new Error('Cannot find history')
-	// }
+	if (!state) {
+		throw new Error('Cannot find history')
+	}
 	return { state, dispatch, pushHistory, popHistory }
 }

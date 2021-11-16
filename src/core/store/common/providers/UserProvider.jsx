@@ -10,7 +10,6 @@ export function UserProvider({ children }) {
 	const [userState, userDispatch] = useReducer(userReducer, userInitialState)
 
 	function setUserInfo(payload) {
-		console.log('페이로드 => ', payload)
 		userDispatch({
 			type: SET_ADD_USER,
 			payload: { ...payload, isLoggined: true },
