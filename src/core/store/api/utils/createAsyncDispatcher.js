@@ -16,7 +16,7 @@ export function createAsyncDispatcher(type, promiseFn) {
 			if (rest.length > 0 && !data.success) {
 				const newArr = [...rest]
 				Object.values(newArr).forEach((a, i) => {
-					Object.keys(a).forEach(b => {
+					Object.keys(a).forEach((b) => {
 						isInit = b === 'initData' ? true : false
 						initData = isInit ? newArr[i].initData : null
 					})

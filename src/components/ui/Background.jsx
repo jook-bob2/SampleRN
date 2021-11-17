@@ -1,12 +1,12 @@
-import React, { memo } from 'react'
-import { Keyboard, Platform, TouchableWithoutFeedback } from 'react-native'
+import React, { memo, useState } from 'react'
+import { Keyboard, Platform, TouchableWithoutFeedback, RefreshControl } from 'react-native'
 import styled from 'styled-components/native'
 
 const Container = styled.SafeAreaView`
 	flex: 1;
 	justify-content: center;
 	align-items: center;
-	background: #ffffff;
+	background-color: #ffffff;
 `
 
 const ImageBackground = styled.ImageBackground`
@@ -37,10 +37,24 @@ const Contents = styled.View`
 	padding: 10px;
 `
 
+const wait = (timeout) => {
+	return new Promise((resolve) => setTimeout(resolve, timeout))
+}
+
 const Background = ({ children, isFlat }) => {
+	const [refreshing, setRefreshing] = useState(false)
+
+	const onRefresh = React.useCallback(() => {
+		setRefreshing(true)
+		wait(1000).then(() => setRefreshing(false))
+	}, [])
+
 	return (
 		<Container>
-			<ImageBackground source={require('@assets/images/background_dot.png')} resizeMode="repeat">
+			<ImageBackground
+				source={require('@assets/images/background.jpeg')}
+				resizeMode="stretch"
+				imageStyle={{ opacity: 0.2 }}>
 				<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 					<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
 						{isFlat ? (
@@ -48,7 +62,8 @@ const Background = ({ children, isFlat }) => {
 								<Contents>{children}</Contents>
 							</FlatView>
 						) : (
-							<ScrollView>
+							<ScrollView
+								refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
 								<Contents>{children}</Contents>
 							</ScrollView>
 						)}

@@ -21,8 +21,6 @@ export function PathHistoryProvider({ children }) {
 			type: POP_PATH_HISTORY,
 		})
 
-		console.log('historyState ==>', historyState)
-
 		return historyState.length > 0 ? historyState[historyState.length - 2] : []
 	}
 

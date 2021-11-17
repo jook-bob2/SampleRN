@@ -1,18 +1,18 @@
-import { useNavigation, useRoute } from '@react-navigation/core'
-import React, { useEffect } from 'react'
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/core'
+import React, { useCallback, useEffect } from 'react'
 import moment from 'moment'
 import { ActivityIndicator } from 'react-native'
-import { getBoxOfficeDetail } from '@/core/api/boxOfficeApi'
 import Link from '@/components/ui/Link'
 import Row from '@/components/ui/Row'
-import useFetch from '@/core/net/useFetch'
 import Paragraph from '@/components/ui/Paragraph'
+import { useBoxOfficeContext } from '@/core/store/api/providers/BoxOfficeApiProvider'
+import { GET_BOX_OFFICE_DETAIL } from '@/core/store/api/create/boxOfficeCreate'
 
 export default function BoxOfficeDetail() {
 	const { params } = useRoute()
 	const navigation = useNavigation()
-
-	const { data, error } = useFetch({ movieCd: params.params.movieCd }, getBoxOfficeDetail)
+	const { state, dispatch } = useBoxOfficeContext()
+	const { data, loading, error } = state.BoxOfficeDetail
 
 	useEffect(() => {
 		if (data) {
@@ -22,10 +22,26 @@ export default function BoxOfficeDetail() {
 		}
 	}, [data])
 
-	if (error) return <Paragraph>{JSON.stringify(error)}</Paragraph>
-	if (!data) return <ActivityIndicator size="large" />
+	useFocusEffect(
+		useCallback(() => {
+			getBoxOfficeDetail()
+		}, [params]),
+	)
 
-	const detail = data?.movieInfoResult?.movieInfo
+	async function getBoxOfficeDetail() {
+		try {
+			await GET_BOX_OFFICE_DETAIL(dispatch, {
+				movieCd: params.params.movieCd,
+			})
+		} catch (err) {
+			console.log(err)
+		}
+	}
+
+	if (error) return <Paragraph>{error}</Paragraph>
+	if (loading || !data) return <ActivityIndicator size="large" />
+
+	const detail = data?.movieInfoResult?.movieInfo || {}
 
 	return (
 		<>

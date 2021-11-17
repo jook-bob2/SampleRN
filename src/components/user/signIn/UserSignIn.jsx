@@ -6,7 +6,7 @@ import { useFocusEffect, useNavigation } from '@react-navigation/core'
 import Button from '@/components/ui/Button'
 import TextInput from '@/components/ui/TextInput'
 import { emailValidator, passwordValidator } from '@/utils/validator'
-import { theme } from '@/theme/theme'
+import { theme } from '@/theme'
 import Logo from '@/components/ui/Logo'
 import Row from '@/components/ui/Row'
 import Title from '@/components/ui/Title'
@@ -20,11 +20,12 @@ const Container = styled.View`
 
 const Label = styled.Text`
 	color: ${theme.colors.secondary};
+	font-family: ${theme.fonts.notoSans.medium};
 `
 
 const Link = styled.Text`
-	font-weight: bold;
 	color: ${theme.colors.primary};
+	font-family: ${theme.fonts.notoSans.bold};
 `
 
 export default function UserSignIn() {
@@ -36,7 +37,7 @@ export default function UserSignIn() {
 	useFocusEffect(
 		useCallback(() => {
 			if (userState.token) {
-				navigate('MainScreen')
+				replace('MainScreen')
 			}
 		}, [userState]),
 	)
@@ -49,7 +50,6 @@ export default function UserSignIn() {
 					const { email, uid, displayName, emailVerified } = response.user
 					if (emailVerified) {
 						setUserInfo({ id: 1, email, token: uid, name: displayName })
-						replace('MainScreen')
 					} else {
 						alert('이메일을 인증해 주세요.')
 					}

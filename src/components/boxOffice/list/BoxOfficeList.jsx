@@ -1,28 +1,34 @@
-import React, { useEffect } from 'react'
+import React, { useCallback } from 'react'
 import { ActivityIndicator } from 'react-native'
 import BoxOfficeListItem from './BoxOfficeListItem'
 import Paragraph from '@/components/ui/Paragraph'
-import useFetch, { preFetch } from '@/core/net/useFetch'
-import { yesterDay, getBoxOfficeList, getBoxOfficeDetail } from '@/core/api/boxOfficeApi'
+import { yesterDay } from '@/core/api/boxOfficeApi'
+import { GET_BOX_OFFICE_LIST } from '@/core/store/api/create/boxOfficeCreate'
+import { useBoxOfficeContext } from '@/core/store/api/providers/BoxOfficeApiProvider'
+import { useFocusEffect } from '@react-navigation/core'
 
 export default function BoxOfficeList() {
-	const { data, error } = useFetch({ targetDt: yesterDay }, getBoxOfficeList)
+	const { state, dispatch } = useBoxOfficeContext()
+	const { data, loading, error } = state.BoxOfficeList
 
-	useEffect(() => {
-		if (!data) return
+	useFocusEffect(
+		useCallback(() => {
+			getBoxOfficeList()
+		}, []),
+	)
 
-		getDetailPreFetch()
-	}, [data])
-
-	if (error) return <Paragraph>{JSON.stringify(error)}</Paragraph>
-	if (!data) return <ActivityIndicator size="large" />
-	const ranks = data?.boxOfficeResult?.dailyBoxOfficeList || []
-
-	async function getDetailPreFetch() {
-		for (const rank of ranks) {
-			await preFetch({ movieCd: rank.movieCd }, getBoxOfficeDetail)
+	async function getBoxOfficeList() {
+		try {
+			await GET_BOX_OFFICE_LIST(dispatch, { targetDt: yesterDay })
+		} catch (err) {
+			console.log(err)
 		}
 	}
+
+	if (error) return <Paragraph>{error}</Paragraph>
+	if (loading) return <ActivityIndicator size="large" />
+
+	const ranks = data?.boxOfficeResult?.dailyBoxOfficeList || []
 
 	return (
 		<>

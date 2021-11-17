@@ -1,9 +1,10 @@
 import { useFocusEffect, useRoute } from '@react-navigation/core'
 import React, { useCallback, useState } from 'react'
-import { FlatList, Pressable, Text } from 'react-native'
+import { ActivityIndicator, FlatList, Pressable, Text } from 'react-native'
 import styled from 'styled-components/native'
-import { getBoxOfficePeople } from '@/core/api/boxOfficeApi'
 import Paragraph from '@/components/ui/Paragraph'
+import { useBoxOfficeContext } from '@/core/store/api/providers/BoxOfficeApiProvider'
+import { GET_BOX_OFFICE_PEOPLE } from '@/core/store/api/create/boxOfficeCreate'
 
 const Padding = styled.View`
 	padding: 20px;
@@ -12,24 +13,28 @@ const Padding = styled.View`
 export default function BoxOfficeSearchResult() {
 	const { params } = useRoute()
 	const [list, setList] = useState([])
+	const { state, dispatch } = useBoxOfficeContext()
+	const { data, loading, error } = state.BoxOfficePeople
 
 	useFocusEffect(
 		useCallback(() => {
-			getPeopleList()
-		}, []),
+			getBoxOfficePeopleList()
+		}, [params]),
 	)
 
-	async function getPeopleList() {
+	async function getBoxOfficePeopleList() {
 		if (params.peopleNm) {
 			try {
-				const response = await getBoxOfficePeople({ peopleNm: params.peopleNm })
-				console.log('response :: ', response)
-				setList(response.peopleListResult?.peopleList)
-			} catch (error) {
-				console.log(error.message)
+				const response = await GET_BOX_OFFICE_PEOPLE(dispatch, { peopleNm: params.peopleNm })
+				setList(response.data.peopleListResult?.peopleList)
+			} catch (err) {
+				console.log(err)
 			}
 		}
 	}
+
+	if (error) return <Paragraph>{error}</Paragraph>
+	if (loading || !data) return <ActivityIndicator size="large" />
 
 	return (
 		<FlatList

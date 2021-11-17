@@ -23,7 +23,6 @@ export async function getBoxOfficeList({ targetDt }) {
 }
 
 export async function getBoxOfficeDetail({ movieCd }) {
-	console.log('prerender')
 	return await noneAuthClient.get(detailUri, {
 		params: {
 			key: kobisKey,

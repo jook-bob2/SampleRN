@@ -1,7 +1,7 @@
 import React, { memo } from 'react'
 import { StyleSheet } from 'react-native'
 import { TextInput as Input } from 'react-native-paper'
-import { theme } from '@theme/theme'
+import { theme } from '@/theme'
 import styled from 'styled-components/native'
 
 const View = styled.View`
@@ -14,6 +14,7 @@ const Text = styled.Text`
 	color: ${theme.colors.error};
 	padding-horizontal: 4px;
 	padding-top: 4px;
+	font-family: ${theme.fonts.notoSans.bold};
 `
 
 const TextInput = ({ errorText, style, ...props }) => {
@@ -34,6 +35,7 @@ const TextInput = ({ errorText, style, ...props }) => {
 const styles = StyleSheet.create({
 	input: {
 		backgroundColor: theme.colors.surface,
+		fontFamily: `${theme.fonts.notoSans.regular}`,
 	},
 })
 

@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useState } from 'react'
 import { StyleSheet, TouchableOpacity } from 'react-native'
-import { theme } from '@theme/theme'
+import { theme } from '@/theme'
 import { emailValidator, nameValidator, passwordCheckValidator, passwordValidator } from '@/utils/validator'
 import Logo from '@/components/ui/Logo'
 import TextInput from '@/components/ui/TextInput'
@@ -24,11 +24,12 @@ const Row = styled.View`
 
 const Label = styled.Text`
 	color: ${theme.colors.secondary};
+	font-family: ${theme.fonts.notoSans.medium};
 `
 
 const Link = styled.Text`
-	font-weight: bold;
 	color: ${theme.colors.primary};
+	font-family: ${theme.fonts.notoSans.bold};
 `
 
 function UserSignUp() {
@@ -96,7 +97,7 @@ function UserSignUp() {
 
 	return (
 		<Container>
-			<Logo source={require('@assets/images/logo.png')} />
+			<Logo source={require('@assets/images/signUp.png')} />
 			<Title>회원가입</Title>
 			<TextInput
 				label="이름"

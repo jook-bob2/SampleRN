@@ -5,7 +5,7 @@ import styled from 'styled-components/native'
 import Row from '@/components/ui/Row'
 import Paragraph from '@/components/ui/Paragraph'
 
-const Container = styled.View`
+const ItemView = styled.View`
 	padding: 12px;
 `
 
@@ -30,7 +30,7 @@ export default function BoxOfficeListItem({ data }) {
 
 	return (
 		<Pressable onPress={() => navigateMovieDetail(data.movieCd)}>
-			<Container>
+			<ItemView>
 				<Row>
 					<Paragraph>{data.rank}</Paragraph>
 					<Paragraph>
@@ -39,7 +39,7 @@ export default function BoxOfficeListItem({ data }) {
 					<Paragraph>{data.movieNm}</Paragraph>
 					<Paragraph>{data.rankOldAndNew === 'NEW' ? '🆕' : ''}</Paragraph>
 				</Row>
-			</Container>
+			</ItemView>
 		</Pressable>
 	)
 }
