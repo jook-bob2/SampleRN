@@ -1,10 +1,9 @@
-import React, { memo, useCallback } from 'react'
+import React, { memo } from 'react'
 import { getStatusBarHeight } from 'react-native-status-bar-height'
 import styled from 'styled-components/native'
 import { theme } from '@/theme'
-import { useHistoryPath } from '@/core/store/common/providers/PathHistoryProvider'
-import { useFocusEffect } from '@react-navigation/core'
 import { Platform } from 'react-native'
+import { CommonActions } from '@react-navigation/routers'
 
 const Wrapper = styled.View`
 	flex-direction: row;
@@ -47,54 +46,44 @@ const Text = styled.Text`
 `
 
 const Header = ({ options, navigation, route }) => {
-	const { state: history, pushHistory, popHistory } = useHistoryPath()
-
 	const title =
 		options.headerTitle !== undefined ? options.headerTitle : options.title !== undefined ? options.title : null
 
-	useFocusEffect(
-		useCallback(() => {
-			pushHistory({
-				index: history.length > 0 ? history[history.length - 1].index + 1 : 1,
-				screen: route.name,
-				params: route.params || {},
-			})
-		}, [route]),
-	)
-
 	function handlePressToggle() {
 		if (options.isBack) {
-			if (history.length > 0) {
-				const { screen, params } = popHistory()
-				if (screen) {
-					navigation.navigate(screen, params)
-				}
-			}
+			navigation.goBack()
 		} else {
 			navigation.toggleDrawer()
 		}
 	}
 
+	function refresh() {
+		navigation.dispatch(
+			CommonActions.navigate({
+				name: route.name,
+				params: route.params,
+			}),
+		)
+	}
+
 	return (
 		<Wrapper>
-			{navigation && (
-				<Left>
-					<TouchableOpacity onPress={() => handlePressToggle()}>
-						<Image
-							source={
-								options.isBack
-									? require('@assets/icons/arrow_back.png')
-									: require('@assets/icons/hamburg.png')
-							}
-						/>
-					</TouchableOpacity>
-				</Left>
-			)}
+			<Left>
+				<TouchableOpacity onPress={() => handlePressToggle()}>
+					<Image
+						source={
+							options.isBack
+								? require('@assets/icons/arrow_back.png')
+								: require('@assets/icons/hamburg.png')
+						}
+					/>
+				</TouchableOpacity>
+			</Left>
 			<Center>
 				<Text>{title}</Text>
 			</Center>
 			<Right>
-				<TouchableOpacity onPress={() => {}}>
+				<TouchableOpacity onPress={() => refresh()}>
 					<Image source={require('@assets/icons/reload.png')} />
 				</TouchableOpacity>
 			</Right>

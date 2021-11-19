@@ -5,16 +5,17 @@ import { emailValidator, nameValidator, passwordCheckValidator, passwordValidato
 import Logo from '@/components/ui/Logo'
 import TextInput from '@/components/ui/TextInput'
 import Button from '@/components/ui/Button'
-import auth from '@react-native-firebase/auth'
 import { useFocusEffect, useNavigation } from '@react-navigation/core'
 import styled from 'styled-components/native'
 import Title from '@/components/ui/Title'
 import { useUser } from '@/core/store/common/providers/UserProvider'
+import { getCurrentUser, postSignUp } from '@/core/api/userApi'
 
 const Container = styled.View`
 	align-items: center;
 	justify-content: center;
 	margin-top: 30px;
+	padding: 20px;
 `
 
 const Row = styled.View`
@@ -42,13 +43,13 @@ function UserSignUp() {
 
 	useFocusEffect(
 		useCallback(() => {
-			if (userState.token) {
+			if (userState.token && userState.isLoggined) {
 				navigate('MainScreen')
 			}
 		}, [userState]),
 	)
 
-	const handlePressSignUp = () => {
+	function handlePressSignUp() {
 		const nameError = nameValidator(name.value)
 		const emailError = emailValidator(email.value)
 		const passwordError = passwordValidator(password.value)
@@ -62,35 +63,38 @@ function UserSignUp() {
 			return
 		}
 
-		auth()
-			.createUserWithEmailAndPassword(email.value, password.value)
+		postSignUp({ email: email.value, password: password.value })
 			.then(() => {
-				const { updateProfile, sendEmailVerification } = auth().currentUser
+				const user = getCurrentUser()
 
-				updateProfile({
+				user.updateProfile({
 					displayName: name.value,
 				})
 					.then(() => {
-						navigate('SignInScreen')
+						user.sendEmailVerification()
+							.then(() => {
+								navigate('SignInScreen')
+							})
+							.catch((err) => {
+								console.log('email send error :: => ', err)
+							})
 					})
 					.catch((err) => {
-						console.log('currentuser err => ', err)
+						console.log('update profile err => ', err)
 					})
-
-				sendEmailVerification()
 			})
 			.catch((error) => {
-				console.log(error)
+				console.log('post sign up error :: => ', error)
 				if (error.code === 'auth/email-already-in-use') {
-					console.log('That email address is already in use!')
+					alert('That email address is already in use!')
 				}
 
 				if (error.code === 'auth/invalid-email') {
-					console.log('That email address is invalid!')
+					alert('That email address is invalid!')
 				}
 
 				if (error.code === 'auth/weak-password') {
-					console.log('The given password is invalid. [ Password should be at least 6 characters ]]')
+					alert('The given password is invalid. [ Password should be at least 6 characters ]]')
 				}
 			})
 	}

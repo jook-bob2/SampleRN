@@ -1,16 +1,17 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import MainDrawerFlow from '../drawer/flow/MainDrawerFlow'
-import { UserStateContext } from '@/core/store/common/create'
 import AuthStackFlow from './flow/AuthStackFlow'
+import { useUser } from '@/core/store/common/providers/UserProvider'
 
 const Stack = createNativeStackNavigator()
 
 export default function DefaultStackNavigator() {
-	const { userState } = useContext(UserStateContext)
+	const { userState } = useUser()
+
 	return (
 		<Stack.Navigator screenOptions={{ headerShown: false }}>
-			{!userState.token ? (
+			{!userState.token || !userState.isLoggined ? (
 				<Stack.Screen name="AuthStackFlow" component={AuthStackFlow} />
 			) : (
 				<Stack.Screen name="MainDrawerFlow" component={MainDrawerFlow} />

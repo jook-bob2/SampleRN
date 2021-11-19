@@ -33,16 +33,3 @@ export const userReducer = (state, { type, payload }) => {
 			break
 	}
 }
-
-export const pathHistoryReducer = (state, { type, payload }) => {
-	switch (type) {
-		case constants.PUSH_PATH_HISTORY:
-			return state.length > 0 && state.findIndex((s) => s.index === payload.index) > -1
-				? state
-				: [...state, payload]
-		case constants.POP_PATH_HISTORY:
-			return state.length > 0 ? state.filter((element, index) => index < state.length - 1) : []
-		default:
-			break
-	}
-}

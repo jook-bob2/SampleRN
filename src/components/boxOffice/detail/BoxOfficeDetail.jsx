@@ -1,12 +1,12 @@
 import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/core'
 import React, { useCallback, useEffect } from 'react'
 import moment from 'moment'
-import { ActivityIndicator } from 'react-native'
 import Link from '@/components/ui/Link'
 import Row from '@/components/ui/Row'
 import Paragraph from '@/components/ui/Paragraph'
 import { useBoxOfficeContext } from '@/core/store/api/providers/BoxOfficeApiProvider'
 import { GET_BOX_OFFICE_DETAIL } from '@/core/store/api/create/boxOfficeCreate'
+import Loading from '@/components/ui/Loading'
 
 export default function BoxOfficeDetail() {
 	const { params } = useRoute()
@@ -39,7 +39,7 @@ export default function BoxOfficeDetail() {
 	}
 
 	if (error) return <Paragraph>{error}</Paragraph>
-	if (loading || !data) return <ActivityIndicator size="large" />
+	if (loading || !data) return <Loading />
 
 	const detail = data?.movieInfoResult?.movieInfo || {}
 

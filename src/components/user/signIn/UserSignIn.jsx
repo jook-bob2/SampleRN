@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import { StyleSheet, TouchableOpacity } from 'react-native'
 import styled from 'styled-components/native'
-import auth from '@react-native-firebase/auth'
 import { useFocusEffect, useNavigation } from '@react-navigation/core'
 import Button from '@/components/ui/Button'
 import TextInput from '@/components/ui/TextInput'
@@ -11,6 +10,7 @@ import Logo from '@/components/ui/Logo'
 import Row from '@/components/ui/Row'
 import Title from '@/components/ui/Title'
 import { useUser } from '@/core/store/common/providers/UserProvider'
+import { postSignIn } from '@/core/api/userApi'
 
 const Container = styled.View`
 	align-items: center;
@@ -36,7 +36,7 @@ export default function UserSignIn() {
 
 	useFocusEffect(
 		useCallback(() => {
-			if (userState.token) {
+			if (userState.token && userState.isLoggined) {
 				replace('MainScreen')
 			}
 		}, [userState]),
@@ -44,12 +44,11 @@ export default function UserSignIn() {
 
 	function handlePressLogin() {
 		if (validationCheck()) {
-			auth()
-				.signInWithEmailAndPassword(email.value, password.value)
+			postSignIn({ email: email.value, password: password.value })
 				.then((response) => {
 					const { email, uid, displayName, emailVerified } = response.user
 					if (emailVerified) {
-						setUserInfo({ id: 1, email, token: uid, name: displayName })
+						setUserInfo({ id: 1, email, token: uid, name: displayName, isLoggined: true })
 					} else {
 						alert('이메일을 인증해 주세요.')
 					}

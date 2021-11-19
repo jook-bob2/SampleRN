@@ -1,10 +1,11 @@
 import { useFocusEffect, useRoute } from '@react-navigation/core'
 import React, { useCallback, useState } from 'react'
-import { ActivityIndicator, FlatList, Pressable, Text } from 'react-native'
+import { FlatList, Pressable, Text } from 'react-native'
 import styled from 'styled-components/native'
 import Paragraph from '@/components/ui/Paragraph'
 import { useBoxOfficeContext } from '@/core/store/api/providers/BoxOfficeApiProvider'
 import { GET_BOX_OFFICE_PEOPLE } from '@/core/store/api/create/boxOfficeCreate'
+import Loading from '@/components/ui/Loading'
 
 const Padding = styled.View`
 	padding: 20px;
@@ -34,7 +35,7 @@ export default function BoxOfficeSearchResult() {
 	}
 
 	if (error) return <Paragraph>{error}</Paragraph>
-	if (loading || !data) return <ActivityIndicator size="large" />
+	if (loading || !data) return <Loading />
 
 	return (
 		<FlatList
@@ -52,6 +53,7 @@ export default function BoxOfficeSearchResult() {
 					</Paragraph>
 				</Pressable>
 			)}
+			refreshing={true}
 		/>
 	)
 }

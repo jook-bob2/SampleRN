@@ -1,9 +1,13 @@
-import { authClient, noneAuthClient } from '@core/config/axios'
+import auth from '@react-native-firebase/auth'
 
-export async function getUserInfo({ id }) {
-	return await authClient.get(`/user/info/${id}`)
+export function getCurrentUser() {
+	return auth().currentUser
 }
 
-export async function postUserLogin(loginData) {
-	return await noneAuthClient.post('/user/login', loginData)
+export async function postSignIn({ email, password }) {
+	return await auth().signInWithEmailAndPassword(email, password)
+}
+
+export async function postSignUp({ email, password }) {
+	return await auth().createUserWithEmailAndPassword(email, password)
 }

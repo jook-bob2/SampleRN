@@ -12,7 +12,7 @@ export function UserProvider({ children }) {
 	function setUserInfo(payload) {
 		userDispatch({
 			type: SET_ADD_USER,
-			payload: { ...payload, isLoggined: true },
+			payload: { ...payload },
 		})
 	}
 

@@ -6,6 +6,3 @@ export const userInitialState = {
 	token: '',
 	isLoggined: false,
 }
-
-// path history state
-export const pathHistoryInitialState = []
