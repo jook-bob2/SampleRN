@@ -1,11 +1,32 @@
 import React from 'react'
-import { Pressable } from 'react-native'
-import Paragraph from './Paragraph'
+import Paragraph from './text/Paragraph'
+import styled from 'styled-components/native'
+import { theme } from '@/theme'
+import { StyleSheet } from 'react-native'
+
+const Container = styled.View`
+	padding: 5px;
+`
+const Pressable = styled.Pressable`
+	background-color: ${theme.colors.primary};
+	border-radius: 8px;
+	top: 20px;
+	bottom: 0;
+	padding: 0px 5px;
+`
 
 export default function Link({ children, onPress }) {
 	return (
-		<Pressable onPress={onPress}>
-			<Paragraph>{children}</Paragraph>
-		</Pressable>
+		<Container>
+			<Pressable onPress={onPress}>
+				<Paragraph style={styles.text}>{children}</Paragraph>
+			</Pressable>
+		</Container>
 	)
 }
+
+const styles = StyleSheet.create({
+	text: {
+		color: theme.colors.background,
+	},
+})

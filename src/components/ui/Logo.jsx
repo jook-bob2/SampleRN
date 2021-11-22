@@ -6,15 +6,15 @@ const Container = styled.View`
 `
 
 const Image = styled.Image`
-	width: ${(props) => props.width || 128}px;
-	height: ${(props) => props.height || 128}px;
-	margin-bottom: ${(props) => props.bottom || 12}px;
+	width: ${({ width }) => width || 128}px;
+	height: ${({ height }) => height || 128}px;
+	margin-bottom: ${({ bottom }) => bottom || 12}px;
 `
 
-const Logo = ({ source }) => {
+const Logo = ({ source, width, height, bottom }) => {
 	return (
 		<Container>
-			<Image source={source} />
+			<Image source={source} height={height} width={width} bottom={bottom} />
 		</Container>
 	)
 }

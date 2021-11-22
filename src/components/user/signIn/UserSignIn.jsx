@@ -2,15 +2,15 @@ import React, { useCallback, useState } from 'react'
 import { StyleSheet, TouchableOpacity } from 'react-native'
 import styled from 'styled-components/native'
 import { useFocusEffect, useNavigation } from '@react-navigation/core'
-import Button from '@/components/ui/Button'
-import TextInput from '@/components/ui/TextInput'
+import TextInput from '@/components/ui/text/TextInput'
 import { emailValidator, passwordValidator } from '@/utils/validator'
 import { theme } from '@/theme'
 import Logo from '@/components/ui/Logo'
-import Row from '@/components/ui/Row'
-import Title from '@/components/ui/Title'
 import { useUser } from '@/core/store/common/providers/UserProvider'
 import { postSignIn } from '@/core/api/userApi'
+import Title from '@/components/ui/text/Title'
+import Row from '@/components/ui/view/Row'
+import Button from '@/components/ui/button/Button'
 
 const Container = styled.View`
 	align-items: center;
@@ -80,7 +80,7 @@ export default function UserSignIn() {
 
 	return (
 		<Container>
-			<Logo width={100} height={100} bottom={40} source={require('@assets/images/signIn.png')} />
+			<Logo width={100} height={100} bottom={12} source={require('@assets/images/signIn.png')} />
 			<Title>로그인</Title>
 
 			<TextInput

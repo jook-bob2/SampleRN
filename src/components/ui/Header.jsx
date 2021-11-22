@@ -4,6 +4,10 @@ import styled from 'styled-components/native'
 import { theme } from '@/theme'
 import { Platform } from 'react-native'
 import { CommonActions } from '@react-navigation/routers'
+import Center from './view/Center'
+import Left from './view/Left'
+import Right from './view/Right'
+import Subtitle from './text/Subtitle'
 
 const Wrapper = styled.View`
 	flex-direction: row;
@@ -16,20 +20,8 @@ const Wrapper = styled.View`
 	padding: 10px 20px;
 `
 
-const Left = styled.View`
-	align-items: flex-start;
-`
-
-const Center = styled.View`
-	align-items: center;
-`
-
-const Right = styled.View`
-	align-items: flex-end;
-`
-
 const TouchableOpacity = styled.TouchableOpacity`
-	position: relative;
+	/* position: relative; */
 `
 
 const Image = styled.Image`
@@ -37,12 +29,6 @@ const Image = styled.Image`
 	height: 35px;
 	border-radius: 10px;
 	background-color: white;
-`
-
-const Text = styled.Text`
-	font-size: 20px;
-	font-weight: bold;
-	color: ${theme.colors.surface};
 `
 
 const Header = ({ options, navigation, route }) => {
@@ -80,7 +66,7 @@ const Header = ({ options, navigation, route }) => {
 				</TouchableOpacity>
 			</Left>
 			<Center>
-				<Text>{title}</Text>
+				<Subtitle>{title}</Subtitle>
 			</Center>
 			<Right>
 				<TouchableOpacity onPress={() => refresh()}>

@@ -2,12 +2,18 @@ import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/core'
 import React, { useCallback, useEffect } from 'react'
 import moment from 'moment'
 import Link from '@/components/ui/Link'
-import Row from '@/components/ui/Row'
-import Paragraph from '@/components/ui/Paragraph'
 import { useBoxOfficeContext } from '@/core/store/api/providers/BoxOfficeApiProvider'
 import { GET_BOX_OFFICE_DETAIL } from '@/core/store/api/create/boxOfficeCreate'
 import Loading from '@/components/ui/Loading'
+import styled from 'styled-components/native'
+import Paragraph from '@/components/ui/text/Paragraph'
+import { theme } from '@/theme'
+import { StyleSheet } from 'react-native'
+import Row from '@/components/ui/view/Row'
 
+const Container = styled.View`
+	padding: 20px;
+`
 export default function BoxOfficeDetail() {
 	const { params } = useRoute()
 	const navigation = useNavigation()
@@ -39,53 +45,72 @@ export default function BoxOfficeDetail() {
 	}
 
 	if (error) return <Paragraph>{error}</Paragraph>
-	if (loading || !data) return <Loading />
 
 	const detail = data?.movieInfoResult?.movieInfo || {}
 
 	return (
 		<>
-			<Row>
-				<Paragraph>영화명 : {detail.movieNm}</Paragraph>
-			</Row>
-			<Row>
-				<Paragraph>상영시간 : {detail.showTm}분</Paragraph>
-			</Row>
-			<Row>
-				<Paragraph>개봉일 : {moment(detail.openDt).format('YYYY년 MM월 DD일')}</Paragraph>
-			</Row>
-			<Row>
-				<Paragraph>
-					감독 :{' '}
-					{detail.directors.map((director, index) => (
-						<Link
-							key={index}
-							onPress={() => {
-								navigation.navigate('BoxOfficeSearchResultScreen', {
-									peopleNm: director.peopleNm,
-								})
-							}}>
-							{director.peopleNm}
-						</Link>
-					))}
-				</Paragraph>
-			</Row>
-			<Row>
-				<Paragraph>
-					출연 :{' '}
-					{detail.actors.map((actor, index) => (
-						<Link
-							key={index}
-							onPress={() => {
-								navigation.navigate('BoxOfficeSearchResultScreen', {
-									peopleNm: actor.peopleNm,
-								})
-							}}>
-							{actor.peopleNm}
-						</Link>
-					))}
-				</Paragraph>
-			</Row>
+			{loading && !data && <Loading />}
+			<Container>
+				<Row>
+					<Paragraph>
+						영화명 : <Paragraph style={styles.text}>{detail.movieNm}</Paragraph>
+					</Paragraph>
+				</Row>
+				<Row>
+					<Paragraph>
+						상영시간 : <Paragraph style={styles.text}>{detail.showTm}분</Paragraph>
+					</Paragraph>
+				</Row>
+				<Row>
+					<Paragraph>
+						개봉일 :{' '}
+						<Paragraph style={styles.text}>{moment(detail.openDt).format('YYYY년 MM월 DD일')}</Paragraph>
+					</Paragraph>
+				</Row>
+				<Row>
+					<Paragraph style={styles.test}>
+						감독 :{' '}
+						{detail?.directors?.map((director, index) => (
+							<Link
+								key={index}
+								onPress={() => {
+									navigation.navigate('BoxOfficeSearchResultScreen', {
+										peopleNm: director.peopleNm,
+									})
+								}}>
+								{director.peopleNm}
+							</Link>
+						))}
+					</Paragraph>
+				</Row>
+				<Row>
+					<Paragraph>
+						출연 :{' '}
+						{detail?.actors?.map((actor, index) => (
+							<Link
+								key={index}
+								onPress={() => {
+									navigation.navigate('BoxOfficeSearchResultScreen', {
+										peopleNm: actor.peopleNm,
+									})
+								}}>
+								{actor.peopleNm}
+							</Link>
+						))}
+					</Paragraph>
+				</Row>
+			</Container>
 		</>
 	)
 }
+
+const styles = StyleSheet.create({
+	text: {
+		fontFamily: theme.fonts.notoSans.regular,
+	},
+	test: {
+		top: 0,
+		bottom: 5,
+	},
+})

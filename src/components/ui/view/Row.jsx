@@ -5,6 +5,6 @@ const Container = styled.View`
 	flex-direction: row;
 `
 
-export default function Row({ children }) {
-	return <Container style={{ flexDirection: 'row' }}>{children}</Container>
+export default function Row({ children, style }) {
+	return <Container style={style}>{children}</Container>
 }

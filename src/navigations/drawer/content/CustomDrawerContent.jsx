@@ -11,14 +11,11 @@ const ImageBackground = styled.ImageBackground`
 `
 
 const ProfileView = styled.View`
-	flex: 2;
-	align-content: center;
-	justify-content: center;
+	${theme.common.flexCenterColumn}
 	padding: 20px;
 `
 
-const Text = styled.Text`
-	text-align: center;
+const NameText = styled.Text`
 	font-size: 20px;
 	font-family: ${theme.fonts.notoSans.bold};
 `
@@ -78,7 +75,7 @@ export default function CustomDrawerContent(props) {
 			<DrawerContentScrollView {...props}>
 				{name && (
 					<ProfileView>
-						<Text>{name}</Text>
+						<NameText>{name}</NameText>
 						<ImageView>
 							<Image source={require('@assets/images/karina.jpeg')} />
 						</ImageView>

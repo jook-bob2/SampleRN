@@ -3,24 +3,20 @@ import { StyleSheet, TouchableOpacity } from 'react-native'
 import { theme } from '@/theme'
 import { emailValidator, nameValidator, passwordCheckValidator, passwordValidator } from '@/utils/validator'
 import Logo from '@/components/ui/Logo'
-import TextInput from '@/components/ui/TextInput'
-import Button from '@/components/ui/Button'
+import TextInput from '@/components/ui/text/TextInput'
 import { useFocusEffect, useNavigation } from '@react-navigation/core'
 import styled from 'styled-components/native'
-import Title from '@/components/ui/Title'
 import { useUser } from '@/core/store/common/providers/UserProvider'
 import { getCurrentUser, postSignUp } from '@/core/api/userApi'
+import Title from '@/components/ui/text/Title'
+import Row from '@/components/ui/view/Row'
+import Button from '@/components/ui/button/Button'
 
 const Container = styled.View`
 	align-items: center;
 	justify-content: center;
 	margin-top: 30px;
 	padding: 20px;
-`
-
-const Row = styled.View`
-	flex-direction: row;
-	margin-top: 4px;
 `
 
 const Label = styled.Text`

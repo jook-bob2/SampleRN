@@ -18,5 +18,23 @@ export const theme = {
 			regular: 'NotoSansKR-Regular',
 			thin: 'NotoSansKR-Thin',
 		},
+		size: {
+			title: 30,
+			subTitle: 24,
+			paragraph: 18,
+		},
+	},
+	common: {
+		flexCenterRow: `
+			flex: 1;
+			justify-contents: center;
+    		align-items: center;
+		`,
+		flexCenterColumn: `
+			flex: 1;
+			flex-direction: column;
+			justify-contents: center;
+			align-items: center;
+		`,
 	},
 }

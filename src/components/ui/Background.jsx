@@ -3,11 +3,10 @@ import React, { memo, useState, useCallback, useEffect } from 'react'
 import { Keyboard, Platform, TouchableWithoutFeedback, RefreshControl, ToastAndroid, BackHandler } from 'react-native'
 import styled from 'styled-components/native'
 import { CommonActions } from '@react-navigation/routers'
+import { theme } from '@/theme'
 
 const Container = styled.SafeAreaView`
-	flex: 1;
-	justify-content: center;
-	align-items: center;
+	${theme.common.flexCenterRow}
 `
 
 const ImageBackground = styled.ImageBackground`
@@ -16,7 +15,6 @@ const ImageBackground = styled.ImageBackground`
 `
 
 const KeyboardAvoidingView = styled.KeyboardAvoidingView`
-	flex: 1;
 	width: 100%;
 	align-self: center;
 	align-items: center;
@@ -24,18 +22,13 @@ const KeyboardAvoidingView = styled.KeyboardAvoidingView`
 `
 
 const ScrollView = styled.ScrollView`
-	flex: 1;
 	width: 100%;
 	text-align: center;
 `
 
-const FlatView = styled.View`
-	flex: 1;
-`
+const FlatView = styled.View``
 
-const Contents = styled.View`
-	flex: 1;
-`
+const Contents = styled.View``
 
 const Background = ({ children, options = { isFlat: false } }) => {
 	const [refreshing, setRefreshing] = useState(false)
