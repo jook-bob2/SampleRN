@@ -3,7 +3,6 @@ import { StyleSheet, TouchableOpacity } from 'react-native'
 import { theme } from '@/theme'
 import { emailValidator, nameValidator, passwordCheckValidator, passwordValidator } from '@/utils/validator'
 import Logo from '@/components/ui/Logo'
-import TextInput from '@/components/ui/text/TextInput'
 import { useFocusEffect, useNavigation } from '@react-navigation/core'
 import styled from 'styled-components/native'
 import { useUser } from '@/core/store/common/providers/UserProvider'
@@ -11,6 +10,8 @@ import { getCurrentUser, postSignUp } from '@/core/api/userApi'
 import Title from '@/components/ui/text/Title'
 import Row from '@/components/ui/view/Row'
 import Button from '@/components/ui/button/Button'
+import { useAlert } from '@/core/store/common/providers/AlertProvider'
+import TextInput from '@/components/ui/input/TextInput'
 
 const Container = styled.View`
 	align-items: center;
@@ -36,6 +37,7 @@ function UserSignUp() {
 	const [passwordCheck, setPasswordCheck] = useState({ value: '', error: '' })
 	const { userState } = useUser()
 	const { navigate } = useNavigation()
+	const { $alert } = useAlert()
 
 	useFocusEffect(
 		useCallback(() => {
@@ -82,15 +84,15 @@ function UserSignUp() {
 			.catch((error) => {
 				console.log('post sign up error :: => ', error)
 				if (error.code === 'auth/email-already-in-use') {
-					alert('That email address is already in use!')
+					$alert('That email address is already in use!')
 				}
 
 				if (error.code === 'auth/invalid-email') {
-					alert('That email address is invalid!')
+					$alert('That email address is invalid!')
 				}
 
 				if (error.code === 'auth/weak-password') {
-					alert('The given password is invalid. [ Password should be at least 6 characters ]]')
+					$alert('The given password is invalid. [ Password should be at least 6 characters ]]')
 				}
 			})
 	}

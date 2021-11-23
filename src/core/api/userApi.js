@@ -11,3 +11,7 @@ export async function postSignIn({ email, password }) {
 export async function postSignUp({ email, password }) {
 	return await auth().createUserWithEmailAndPassword(email, password)
 }
+
+export async function postResetPassword({ email }) {
+	return await auth().sendPasswordResetEmail(email)
+}

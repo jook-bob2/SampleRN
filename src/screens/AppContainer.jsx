@@ -1,4 +1,5 @@
 import Background from '@/components/ui/Background'
+import Modal from '@/components/ui/modal/Modal'
 import React from 'react'
 
 export default function AppContainer(props) {
@@ -6,6 +7,8 @@ export default function AppContainer(props) {
 	return (
 		<Background options={backgroundOption}>
 			<Screen />
+			<Modal.Alert />
+			<Modal.Confirm />
 		</Background>
 	)
 }

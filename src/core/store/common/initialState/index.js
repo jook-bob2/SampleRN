@@ -6,3 +6,16 @@ export const userInitialState = {
 	token: '',
 	isLoggined: false,
 }
+
+export const alertInitialState = {
+	isOpen: false,
+	title: '',
+	msg: '',
+}
+
+export const confirmInitialState = {
+	isOpen: false,
+	title: '',
+	msg: '',
+	onPress: () => {},
+}

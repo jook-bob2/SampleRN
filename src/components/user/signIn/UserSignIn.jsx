@@ -2,7 +2,6 @@ import React, { useCallback, useState } from 'react'
 import { StyleSheet, TouchableOpacity } from 'react-native'
 import styled from 'styled-components/native'
 import { useFocusEffect, useNavigation } from '@react-navigation/core'
-import TextInput from '@/components/ui/text/TextInput'
 import { emailValidator, passwordValidator } from '@/utils/validator'
 import { theme } from '@/theme'
 import Logo from '@/components/ui/Logo'
@@ -11,6 +10,8 @@ import { postSignIn } from '@/core/api/userApi'
 import Title from '@/components/ui/text/Title'
 import Row from '@/components/ui/view/Row'
 import Button from '@/components/ui/button/Button'
+import { useAlert } from '@/core/store/common/providers/AlertProvider'
+import TextInput from '@/components/ui/input/TextInput'
 
 const Container = styled.View`
 	align-items: center;
@@ -33,6 +34,7 @@ export default function UserSignIn() {
 	const { userState, setUserInfo } = useUser()
 	const [email, setEmail] = useState({ value: '', error: '' })
 	const [password, setPassword] = useState({ value: '', error: '' })
+	const { $alert } = useAlert()
 
 	useFocusEffect(
 		useCallback(() => {
@@ -46,20 +48,33 @@ export default function UserSignIn() {
 		if (validationCheck()) {
 			postSignIn({ email: email.value, password: password.value })
 				.then((response) => {
-					const { email, uid, displayName, emailVerified } = response.user
-					if (emailVerified) {
-						setUserInfo({ id: 1, email, token: uid, name: displayName, isLoggined: true })
+					const user = response.user
+					if (user.emailVerified) {
+						setUserInfo({
+							id: 1,
+							email: user.email,
+							token: user.uid,
+							name: user.displayName,
+							isLoggined: true,
+						})
 					} else {
-						alert('이메일을 인증해 주세요.')
+						$alert('이메일을 인증해 주세요.')
 					}
 				})
 				.catch((error) => {
 					console.log(error)
 					if (error.code === 'auth/wrong-password') {
-						alert('패스워드가 틀렸습니다.')
+						// $alert('패스워드가 틀렸습니다.')
+						$alert({ title: '로그인 오류', msg: '패스워드가 틀렸습니다.' })
 					}
 					if (error.code === 'auth/user-not-found') {
-						alert('유저를 찾을 수 없습니다.')
+						$alert('유저를 찾을 수 없습니다.')
+					}
+					if (error.code === 'auth/too-many-requests') {
+						$alert({
+							title: '로그인 오류',
+							msg: '요청 횟수가 초과되었습니다.\n 비밀번호를 재설정 하세요.',
+						})
 					}
 				})
 		}
@@ -110,8 +125,8 @@ export default function UserSignIn() {
 
 			<Row>
 				<Label>비밀번호를 잊으셨나요? </Label>
-				<TouchableOpacity onPress={() => alert('미구현 상태입니다.')}>
-					<Link>비밀번호 찾기</Link>
+				<TouchableOpacity onPress={() => navigate('ResetPasswordScreen')}>
+					<Link>비밀번호 재설정</Link>
 				</TouchableOpacity>
 			</Row>
 

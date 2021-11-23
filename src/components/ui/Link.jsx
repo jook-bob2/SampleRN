@@ -1,8 +1,8 @@
 import React from 'react'
-import Paragraph from './text/Paragraph'
 import styled from 'styled-components/native'
 import { theme } from '@/theme'
 import { StyleSheet } from 'react-native'
+import SmallText from './text/SmallText'
 
 const Container = styled.View`
 	padding: 5px;
@@ -19,7 +19,7 @@ export default function Link({ children, onPress }) {
 	return (
 		<Container>
 			<Pressable onPress={onPress}>
-				<Paragraph style={styles.text}>{children}</Paragraph>
+				<SmallText style={styles.text}>{children}</SmallText>
 			</Pressable>
 		</Container>
 	)

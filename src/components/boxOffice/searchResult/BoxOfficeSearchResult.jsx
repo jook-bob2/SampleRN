@@ -45,13 +45,13 @@ export default function BoxOfficeSearchResult() {
 				<FlatList
 					data={list}
 					keyExtractor={(item) => item.peopleCd}
-					renderItem={(data) => (
+					renderItem={(render) => (
 						<Pressable onPress={() => {}}>
 							<Paragraph>
-								{data.item.peopleNm} ({data.item.repRoleNm})
+								{render.item.peopleNm} ({render.item.repRoleNm})
 							</Paragraph>
 							<Paragraph style={{ fontFamily: theme.fonts.notoSans.light }}>
-								{data.item.filmoNames}
+								{render.item.filmoNames}
 							</Paragraph>
 						</Pressable>
 					)}

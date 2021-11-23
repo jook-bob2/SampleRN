@@ -22,19 +22,20 @@ export const theme = {
 			title: 30,
 			subTitle: 24,
 			paragraph: 18,
+			small: 15,
 		},
 	},
 	common: {
 		flexCenterRow: `
 			flex: 1;
 			flex-direction: row;
-			justify-contents: center;
+			justify-content: center;
     		align-items: center;
 		`,
 		flexCenterColumn: `
 			flex: 1;
 			flex-direction: column;
-			justify-contents: center;
+			justify-content: center;
 			align-items: center;
 		`,
 	},
