@@ -4,7 +4,7 @@ const loadingState = {
 	data: null,
 	error: null,
 }
-const loading = data => ({
+const loading = (data) => ({
 	loading: true,
 	data,
 	error: null,

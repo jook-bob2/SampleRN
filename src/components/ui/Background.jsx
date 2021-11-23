@@ -6,7 +6,7 @@ import { CommonActions } from '@react-navigation/routers'
 import { theme } from '@/theme'
 
 const Container = styled.SafeAreaView`
-	${theme.common.flexCenterRow}
+	${theme.common.flexCenterColumn}
 `
 
 const ImageBackground = styled.ImageBackground`

@@ -27,6 +27,7 @@ export const theme = {
 	common: {
 		flexCenterRow: `
 			flex: 1;
+			flex-direction: row;
 			justify-contents: center;
     		align-items: center;
 		`,
