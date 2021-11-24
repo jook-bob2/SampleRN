@@ -1,5 +1,5 @@
 import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/core'
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback } from 'react'
 import moment from 'moment'
 import Link from '@/components/ui/Link'
 import { useBoxOfficeContext } from '@/core/store/api/providers/BoxOfficeApiProvider'
@@ -20,14 +20,6 @@ export default function BoxOfficeDetail() {
 	const { state, dispatch } = useBoxOfficeContext()
 	const { data, loading, error } = state.BoxOfficeDetail
 
-	useEffect(() => {
-		if (data) {
-			navigation.setOptions({
-				title: data?.movieInfoResult?.movieInfo.movieNm,
-			})
-		}
-	}, [data])
-
 	useFocusEffect(
 		useCallback(() => {
 			getBoxOfficeDetail()
@@ -35,12 +27,18 @@ export default function BoxOfficeDetail() {
 	)
 
 	async function getBoxOfficeDetail() {
-		try {
-			await GET_BOX_OFFICE_DETAIL(dispatch, {
-				movieCd: params.params.movieCd,
-			})
-		} catch (err) {
-			console.log(err)
+		if (params.movieCd) {
+			try {
+				const response = await GET_BOX_OFFICE_DETAIL(dispatch, {
+					movieCd: params.movieCd,
+				})
+
+				navigation.setOptions({
+					title: response.data.movieInfoResult.movieInfo.movieNm,
+				})
+			} catch (err) {
+				console.log(err)
+			}
 		}
 	}
 
@@ -69,7 +67,7 @@ export default function BoxOfficeDetail() {
 					</Paragraph>
 				</Row>
 				<Row>
-					<Paragraph style={styles.test}>
+					<Paragraph>
 						감독 :{' '}
 						{detail?.directors?.map((director, index) => (
 							<Link

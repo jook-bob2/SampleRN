@@ -101,7 +101,13 @@ export default function CustomDrawerContent(props) {
 						label="박스오피스"
 						labelStyle={labelStyle}
 						icon={() => <Icon source={require('@assets/icons/movie.png')} />}
-						onPress={() => navigate('BoxOfficeListScreen')}
+						onPress={() => navigate('MovieDrawerFlow', { screen: 'BoxOfficeListScreen' })}
+					/>
+					<DrawerItem
+						label="탭 플로우 이동"
+						labelStyle={labelStyle}
+						icon={() => <Icon source={require('@assets/icons/flow.png')} />}
+						onPress={() => navigate('MainTabFlow', { screen: 'MainScreen' })}
 					/>
 					<DrawerItem
 						label="로그아웃"

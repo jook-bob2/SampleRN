@@ -24,13 +24,15 @@
     "build:android:dev": "yarn env:dev && yarn _build:android",
     "build:android:prod": "yarn env:prod && yarn _build:android",
     "test": "jest",
-    "lint": "eslint .",
+    "lint": "eslint --ext .jsx --ext .js src/",
+    "lint:fix": "eslint --ext .jsx --ext .js src/ --fix",
     "link": "react-native link"
   },
   "dependencies": {
     "@react-native-community/hooks": "^2.8.1",
     "@react-native-firebase/app": "^13.0.1",
     "@react-native-firebase/auth": "^13.0.1",
+    "@react-navigation/bottom-tabs": "^6.0.9",
     "@react-navigation/drawer": "^6.1.8",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/native-stack": "^6.2.5",
@@ -49,8 +51,10 @@
     "axios": "^0.24.0",
     "babel-jest": "^26.6.3",
     "babel-plugin-module-resolver": "^4.1.0",
-    "eslint": "7.14.0",
+    "eslint": "7.24.0",
+    "husky": "4",
     "jest": "^26.6.3",
+    "lint-staged": "^11.0.0",
     "metro-react-native-babel-preset": "^0.66.2",
     "moment": "^2.29.1",
     "prettier": "^2.4.1",
@@ -59,6 +63,17 @@
     "react-test-renderer": "17.0.2",
     "styled-components": "^5.3.3",
     "swr": "^1.0.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.@(js|jsx)": [
+      "yarn lint:fix",
+      "git add"
+    ]
   },
   "jest": {
     "preset": "react-native"

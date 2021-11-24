@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import React, { memo, useCallback } from 'react'
 import { getStatusBarHeight } from 'react-native-status-bar-height'
 import styled from 'styled-components/native'
 import { theme } from '@/theme'
@@ -36,12 +36,30 @@ const Header = ({ options, navigation, route }) => {
 		options.headerTitle !== undefined ? options.headerTitle : options.title !== undefined ? options.title : null
 
 	function handlePressToggle() {
-		if (options.isBack) {
-			navigation.goBack()
-		} else {
-			navigation.toggleDrawer()
+		const type = navigation.getState().type
+		if (type === 'drawer') {
+			if (options.isBack) {
+				navigation.goBack()
+			} else {
+				navigation.toggleDrawer()
+			}
+		} else if (type === 'tab') {
+			if (options.isBack) {
+				navigation.goBack()
+			} else {
+				navigation.navigate('MainDrawerFlow', { screen: 'MainScreen' })
+			}
 		}
 	}
+
+	const imageSourceCreate = useCallback(() => {
+		const type = navigation.getState().type
+		if (type === 'drawer') {
+			return options.isBack ? require('@assets/icons/arrow_back.png') : require('@assets/icons/hamburg.png')
+		} else if (type === 'tab') {
+			return options.isBack ? require('@assets/icons/arrow_back.png') : require('@assets/icons/home.png')
+		}
+	}, [navigation])
 
 	function refresh() {
 		navigation.dispatch(
@@ -56,17 +74,11 @@ const Header = ({ options, navigation, route }) => {
 		<Wrapper>
 			<Left>
 				<TouchableOpacity onPress={() => handlePressToggle()}>
-					<Image
-						source={
-							options.isBack
-								? require('@assets/icons/arrow_back.png')
-								: require('@assets/icons/hamburg.png')
-						}
-					/>
+					<Image source={imageSourceCreate()} />
 				</TouchableOpacity>
 			</Left>
 			<Center>
-				<Subtitle>{title}</Subtitle>
+				<Subtitle style={{ fontSize: 20 }}>{title}</Subtitle>
 			</Center>
 			<Right>
 				<TouchableOpacity onPress={() => refresh()}>

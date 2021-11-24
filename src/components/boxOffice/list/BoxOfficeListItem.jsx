@@ -24,7 +24,7 @@ export default function BoxOfficeListItem({ data }) {
 
 	const navigateMovieDetail = useCallback(
 		(movieCd) => {
-			navigate('BoxOfficeDetailScreen', { params: { movieCd } })
+			navigate('BoxOfficeDetailScreen', { movieCd })
 		},
 		[navigate],
 	)

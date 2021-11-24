@@ -84,7 +84,10 @@ function Confirm() {
 							mode="contained"
 							style={styles.closeBtn}
 							onPress={() => {
-								closeConfirm()
+								return new Promise((reject) => {
+									closeConfirm()
+									reject(confirmState.onPress('reject'))
+								})
 							}}>
 							닫기
 						</Button>
@@ -92,7 +95,10 @@ function Confirm() {
 							mode="contained"
 							style={styles.confirmBtn}
 							onPress={() => {
-								confirmState.onPress()
+								return new Promise((resolve) => {
+									closeConfirm()
+									resolve(confirmState.onPress('resolve'))
+								})
 							}}>
 							확인
 						</Button>

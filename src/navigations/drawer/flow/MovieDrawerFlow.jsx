@@ -1,16 +1,16 @@
 import React from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import CustomDrawerContent from '../content/CustomDrawerContent'
-import mainDrawerList from '../drawerList/mainDrawerList'
 import AppContainer from '@/screens/AppContainer'
+import movieDrawerList from '../drawerList/movieDrawerList'
 
 const Drawer = createDrawerNavigator()
 
-export default function MainDrawerFlow() {
+export default function MovieDrawerFlow() {
 	return (
 		<Drawer.Navigator backBehavior="history" drawerContent={(props) => <CustomDrawerContent {...props} />}>
 			<Drawer.Group>
-				{mainDrawerList.map((menu) => (
+				{movieDrawerList.map((menu) => (
 					<Drawer.Screen key={menu.index} name={menu.name} options={menu.options}>
 						{(props) => (
 							<AppContainer

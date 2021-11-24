@@ -57,10 +57,11 @@ export default function Loading() {
 
 	useEffect(() => {
 		let count = 0
-		let interval = setInterval(() => {
+		const interval = setInterval(() => {
 			setImageNumber(count++ % 15)
 		}, 1000 / 25)
 		return () => {
+			setImageNumber(0)
 			clearInterval(interval)
 		}
 	}, [])
