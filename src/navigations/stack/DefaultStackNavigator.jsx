@@ -3,8 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import MainDrawerFlow from '../drawer/flow/MainDrawerFlow'
 import AuthStackFlow from './flow/AuthStackFlow'
 import { useUser } from '@/core/store/common/providers/UserProvider'
-import MainTabFlow from '../tab/flow/MainTabFlow'
-import MovieDrawerFlow from '../drawer/flow/MovieDrawerFlow'
+import GoogleMapDrawerFlow from '../drawer/flow/GoogleMapDrawerFlow'
 
 const Stack = createNativeStackNavigator()
 
@@ -18,8 +17,7 @@ export default function DefaultStackNavigator() {
 			) : (
 				<>
 					<Stack.Screen name="MainDrawerFlow" component={MainDrawerFlow} />
-					<Stack.Screen name="MovieDrawerFlow" component={MovieDrawerFlow} />
-					<Stack.Screen name="MainTabFlow" component={MainTabFlow} />
+					<Stack.Screen name="GoogleMapDrawerFlow" component={GoogleMapDrawerFlow} />
 				</>
 			)}
 		</Stack.Navigator>

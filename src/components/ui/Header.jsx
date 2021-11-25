@@ -36,29 +36,35 @@ const Header = ({ options, navigation, route }) => {
 		options.headerTitle !== undefined ? options.headerTitle : options.title !== undefined ? options.title : null
 
 	function handlePressToggle() {
-		const type = navigation.getState().type
-		if (type === 'drawer') {
-			if (options.isBack) {
-				navigation.goBack()
-			} else {
-				navigation.toggleDrawer()
-			}
-		} else if (type === 'tab') {
-			if (options.isBack) {
-				navigation.goBack()
-			} else {
-				navigation.navigate('MainDrawerFlow', { screen: 'MainScreen' })
-			}
+		if (options.isBack) {
+			navigation.goBack()
+		} else {
+			navigation.toggleDrawer()
 		}
+		// const type = navigation.getState().type
+		// if (type === 'drawer') {
+		// 	if (options.isBack) {
+		// 		navigation.goBack()
+		// 	} else {
+		// 		navigation.toggleDrawer()
+		// 	}
+		// } else if (type === 'tab') {
+		// 	if (options.isBack) {
+		// 		navigation.goBack()
+		// 	} else {
+		// 		navigation.navigate('MainDrawerFlow', { screen: 'MainScreen' })
+		// 	}
+		// }
 	}
 
 	const imageSourceCreate = useCallback(() => {
-		const type = navigation.getState().type
-		if (type === 'drawer') {
-			return options.isBack ? require('@assets/icons/arrow_back.png') : require('@assets/icons/hamburg.png')
-		} else if (type === 'tab') {
-			return options.isBack ? require('@assets/icons/arrow_back.png') : require('@assets/icons/home.png')
-		}
+		// const type = navigation.getState().type
+		// if (type === 'drawer') {
+		// 	return options.isBack ? require('@assets/icons/arrow_back.png') : require('@assets/icons/hamburg.png')
+		// } else if (type === 'tab') {
+		// 	return options.isBack ? require('@assets/icons/arrow_back.png') : require('@assets/icons/home.png')
+		// }
+		return options.isBack ? require('@assets/icons/arrow_back.png') : require('@assets/icons/hamburg.png')
 	}, [navigation])
 
 	function refresh() {

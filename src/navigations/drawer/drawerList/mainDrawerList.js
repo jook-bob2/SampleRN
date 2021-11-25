@@ -8,12 +8,12 @@ export default [
 		index: 1,
 		component: MainScreen,
 		name: 'MainScreen',
-		options: setOptions({ CustomHeader: Header, options: { title: '메인' } }),
+		options: setOptions({ CustomHeader: Header, options: { title: '메인', tabShown: true } }),
 	},
 	{
 		index: 2,
 		component: MyProfileScreen,
 		name: 'MyProfileScreen',
-		options: setOptions({ CustomHeader: Header, options: { title: '나의 프로필' } }),
+		options: setOptions({ CustomHeader: Header, options: { title: '나의 프로필', tabShown: true } }),
 	},
 ]

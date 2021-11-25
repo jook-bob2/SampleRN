@@ -8,6 +8,7 @@ export const theme = {
 		secondary: '#414757',
 		error: '#f13a59',
 		header: '#2E64FE',
+		aliceBlue: '#f0f8ff',
 	},
 	fonts: {
 		notoSans: {

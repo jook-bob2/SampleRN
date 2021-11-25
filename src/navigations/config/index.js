@@ -1,12 +1,13 @@
 import React from 'react'
 
-export function setOptions({ CustomHeader, options = { title: '', isBack: false } }) {
-	const { title, isBack } = options
+export function setOptions({ CustomHeader, options = { title: '', isBack: false, tabShown: false } }) {
+	const { title, isBack, tabShown } = options
 
 	return {
 		header: (props) => <CustomHeader {...props} />,
 		isBack,
 		title,
+		tabShown,
 	}
 }
 

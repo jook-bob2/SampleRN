@@ -48,7 +48,7 @@ const Icon = styled.Image`
 const labelStyle = { fontSize: 18, color: `${theme.colors.onSurface}`, fontFamily: `${theme.fonts.notoSans.bold}` }
 
 export default function CustomDrawerContent(props) {
-	const { navigate, closeDrawer } = props?.navigation
+	const navigation = props?.navigation
 	const {
 		userState: { name },
 	} = useUser()
@@ -61,8 +61,8 @@ export default function CustomDrawerContent(props) {
 			.then(() => {
 				console.log('로그아웃 되었습니다.')
 				initUserInfo()
-				closeDrawer()
-				navigate('SignInScreen')
+				navigation.closeDrawer()
+				navigation.navigate('SignInScreen')
 			})
 			.catch((err) => console.log(err))
 	}
@@ -89,26 +89,27 @@ export default function CustomDrawerContent(props) {
 						label="메인"
 						icon={() => <Icon source={require('@assets/icons/home.png')} />}
 						labelStyle={labelStyle}
-						onPress={() => navigate('MainScreen')}
+						onPress={() => navigation.navigate('MainTabFlow', { screen: 'MainScreen' })}
 					/>
 					<DrawerItem
 						label="프로필"
 						labelStyle={labelStyle}
 						icon={() => <Icon source={require('@assets/icons/profile.png')} />}
-						onPress={() => navigate('MyProfileScreen')}
+						onPress={() => navigation.navigate('MainTabFlow', { screen: 'MyProfileScreen' })}
 					/>
 					<DrawerItem
 						label="박스오피스"
 						labelStyle={labelStyle}
 						icon={() => <Icon source={require('@assets/icons/movie.png')} />}
-						onPress={() => navigate('MovieDrawerFlow', { screen: 'BoxOfficeListScreen' })}
+						onPress={() => navigation.navigate('MainTabFlow', { screen: 'BoxOfficeListScreen' })}
 					/>
 					<DrawerItem
-						label="탭 플로우 이동"
+						label="구글지도"
 						labelStyle={labelStyle}
-						icon={() => <Icon source={require('@assets/icons/flow.png')} />}
-						onPress={() => navigate('MainTabFlow', { screen: 'MainScreen' })}
+						icon={() => <Icon source={require('@assets/icons/movie.png')} />}
+						onPress={() => navigation.navigate('GoogleMapDrawerFlow', { screen: 'GoogleMapTabFlow' })}
 					/>
+
 					<DrawerItem
 						label="로그아웃"
 						labelStyle={labelStyle}

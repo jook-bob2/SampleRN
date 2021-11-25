@@ -9,7 +9,8 @@ export default [
 		index: 1,
 		component: BoxOfficeListScreen,
 		name: 'BoxOfficeListScreen',
-		options: setOptions({ CustomHeader: Header, options: { title: '박스오피스 목록' } }),
+		options: setOptions({ CustomHeader: Header, options: { title: '박스오피스 목록', tabShown: true } }),
+		// params: { tabShown: true },
 	},
 	{
 		index: 2,
